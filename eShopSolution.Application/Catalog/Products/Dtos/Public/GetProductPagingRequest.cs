@@ -7,7 +7,7 @@ namespace eShopSolution.Application.Catalog.Products.Dtos.Public
 {
     public class GetProductPagingRequest : PagingRequestBase
     {
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
     }
 }
