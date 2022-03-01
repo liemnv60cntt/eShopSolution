@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.WebApp", "eShopSolution.WebApp\eShopSolution.WebApp.csproj", "{56FDEC67-D763-448D-ADDE-3ACCEC3EE486}"
 EndProject
@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.Data", "eShop
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.Application", "eShopSolution.Application\eShopSolution.Application.csproj", "{FD4035DE-57EF-44DA-B98A-A5F6EAF020A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopSolution.Utilities", "eShopSolution.Utilities\eShopSolution.Utilities.csproj", "{78B026C3-B8F3-47C2-AAEA-9663D986C4A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.Utilities", "eShopSolution.Utilities\eShopSolution.Utilities.csproj", "{78B026C3-B8F3-47C2-AAEA-9663D986C4A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopSolution.ViewModels", "eShopSolution.ViewModels\eShopSolution.ViewModels.csproj", "{15587AD8-F79A-4A5A-834C-31F256A272E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{78B026C3-B8F3-47C2-AAEA-9663D986C4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78B026C3-B8F3-47C2-AAEA-9663D986C4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78B026C3-B8F3-47C2-AAEA-9663D986C4A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15587AD8-F79A-4A5A-834C-31F256A272E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15587AD8-F79A-4A5A-834C-31F256A272E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15587AD8-F79A-4A5A-834C-31F256A272E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15587AD8-F79A-4A5A-834C-31F256A272E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
