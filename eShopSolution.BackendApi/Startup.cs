@@ -2,6 +2,7 @@
 using eShopSolution.Data.EF;
 using eShopSolution.Utilities.Constants;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace eShopSolution.BackendApi
 {
@@ -24,6 +25,11 @@ namespace eShopSolution.BackendApi
             //To get PublicProductService Object when use IPublicProductService
             services.AddTransient<IPublicProductService, PublicProductService>();
 
+            //Add swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger eShop Solution", Version = "v1" });
+            });
 
             services.AddControllersWithViews();
         }
@@ -48,7 +54,14 @@ namespace eShopSolution.BackendApi
 
             app.UseAuthorization();
 
-           
+            //Use swagger
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
