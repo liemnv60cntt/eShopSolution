@@ -1,4 +1,5 @@
 ﻿using eShopSolution.Application.Catalog.Products;
+using eShopSolution.Application.Common;
 using eShopSolution.Data.EF;
 using eShopSolution.Utilities.Constants;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,10 @@ namespace eShopSolution.BackendApi
 
             //Declare DI
             //To get PublicProductService Object when use IPublicProductService
+            services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManageProductService, ManageProductService>();
+
 
             //Add swagger
             services.AddSwaggerGen(c =>
