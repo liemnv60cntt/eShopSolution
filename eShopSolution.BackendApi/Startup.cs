@@ -1,7 +1,13 @@
 ﻿using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Application.Common;
+using eShopSolution.Application.System;
 using eShopSolution.Data.EF;
+using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.System.Users;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -22,11 +28,22 @@ namespace eShopSolution.BackendApi
             services.AddDbContext<EShopDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<EShopDbContext>()
+                .AddDefaultTokenProviders();
             //Declare DI
             //To get PublicProductService Object when use IPublicProductService
             services.AddTransient<IStorageService, FileStorageService>();
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManageProductService, ManageProductService>();
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+            //services.AddTransient<IValidator<RegisterRequest>, RegisterRequestValidator>();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
 
             //Add swagger
