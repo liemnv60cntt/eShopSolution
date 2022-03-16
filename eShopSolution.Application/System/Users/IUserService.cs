@@ -12,6 +12,6 @@ namespace eShopSolution.Application.System
     {
         Task<string> Authenticate(LoginRequest request);
         Task<bool> Register(RegisterRequest request);
-        Task<PagedResult<UserVm>> GetUserPaging(GetUserPagingRequest request);
+        Task<PagedResult<UserVm>> GetUsersPaging(GetUserPagingRequest request);
     }
 }

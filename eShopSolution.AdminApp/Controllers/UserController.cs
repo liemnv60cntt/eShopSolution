@@ -1,13 +1,19 @@
-﻿using eShopSolution.AdminApp.Services;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using eShopSolution.AdminApp.Services;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace eShopSolution.AdminApp.Controllers
 {
@@ -35,18 +41,33 @@ namespace eShopSolution.AdminApp.Controllers
             var data = await _userApiClient.GetUsersPagings(request);
             return View(data);
         }
+
+        /*[HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(RegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(ModelState);
+            return View();
+        */
         [HttpGet]
         public async Task<IActionResult> Login()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Remove("Token");
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            if (!ModelState.IsValid) { return View(ModelState); }
+            if (!ModelState.IsValid)
+                return View(ModelState);
+
             var token = await _userApiClient.Authenticate(request);
+
             var userPrincipal = this.ValidateToken(token);
             var authProperties = new AuthenticationProperties
             {
@@ -61,12 +82,15 @@ namespace eShopSolution.AdminApp.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
+
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {
             IdentityModelEventSource.ShowPII = true;
