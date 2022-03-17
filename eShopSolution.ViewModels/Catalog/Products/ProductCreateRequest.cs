@@ -7,10 +7,9 @@ namespace eShopSolution.ViewModels.Catalog.Products
 {
     public class ProductCreateRequest
     {
-        //Dtos - Data transfer objects
-        public decimal Price { get; set; }
-        public decimal OriginalPrice { get; set; }
-        public int Stock { get; set; }
+        public decimal Price { set; get; }
+        public decimal OriginalPrice { set; get; }
+        public int Stock { set; get; }
         public string Name { set; get; }
         public string Description { set; get; }
         public string Details { set; get; }

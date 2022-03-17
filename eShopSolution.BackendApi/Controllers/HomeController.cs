@@ -1,6 +1,11 @@
-﻿using eShopSolution.BackendApi.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using eShopSolution.BackendApi.Models;
 
 namespace eShopSolution.BackendApi.Controllers
 {
@@ -15,9 +20,7 @@ namespace eShopSolution.BackendApi.Controllers
 
         public IActionResult Index()
         {
-            return Ok("Ok lala");
+            return Ok();
         }
-
-        
     }
 }
