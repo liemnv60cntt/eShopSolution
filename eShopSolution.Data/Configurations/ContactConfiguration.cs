@@ -22,6 +22,7 @@ namespace eShopSolution.Data.Configurations
             builder.Property(x => x.PhoneNumber).HasMaxLength(200).IsRequired();
             builder.Property(x => x.Message).IsRequired();
 
+
         }
     }
 }
