@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShopSolution.Application.System;
+using eShopSolution.Application.System.Users;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +29,7 @@ namespace eShopSolution.BackendApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var resultToken = await _userService.Authenticate(request);
+            var resultToken = await _userService.Authencate(request);
 
             if (string.IsNullOrEmpty(resultToken))
             {
