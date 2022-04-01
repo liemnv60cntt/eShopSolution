@@ -10,6 +10,7 @@ using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace eShopSolution.AdminApp.Controllers
 {
+    [Authorize]
     public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
@@ -30,7 +32,6 @@ namespace eShopSolution.AdminApp.Controllers
             _configuration = configuration;
             _roleApiClient = roleApiClient;
         }
-
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
         {
             var request = new GetUserPagingRequest()
@@ -48,18 +49,21 @@ namespace eShopSolution.AdminApp.Controllers
             return View(data.ResultObj);
         }
         [HttpGet]
+        [Authorize(Roles = "admin,lecturer")]
         public async Task<IActionResult> Details(Guid id)
         {
             var result = await _userApiClient.GetById(id);
             return View(result.ResultObj);
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(RegisterRequest request)
         {
             if (!ModelState.IsValid)
@@ -77,6 +81,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var result = await _userApiClient.GetById(id);
@@ -97,6 +102,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -121,6 +127,7 @@ namespace eShopSolution.AdminApp.Controllers
             return RedirectToAction("Index", "Login");
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(Guid id)
         {
             return View(new UserDeleteRequest()
@@ -130,6 +137,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(UserDeleteRequest request)
         {
             if (!ModelState.IsValid)
@@ -147,6 +155,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> RoleAssign(Guid id)
         {
             var roleAssignRequest = await GetRoleAssignRequest(id);
@@ -154,6 +163,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
         {
             if (!ModelState.IsValid)
@@ -185,6 +195,11 @@ namespace eShopSolution.AdminApp.Controllers
                 });
             }
             return roleAssignRequest;
+        }
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

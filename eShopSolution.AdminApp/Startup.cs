@@ -33,13 +33,13 @@ namespace eShopSolution.AdminApp
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
             {
-                options.LoginPath = "/Login/Index";
-                options.AccessDeniedPath = "/User/Forbidden/";
+                options.LoginPath = $"/Login/Index";
+                options.AccessDeniedPath = $"/User/AccessDenied";
             });
 
             services.AddControllersWithViews()
                      .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
-
+            
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
