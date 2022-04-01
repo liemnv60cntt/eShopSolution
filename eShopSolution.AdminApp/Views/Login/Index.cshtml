@@ -29,13 +29,15 @@
                                         <form asp-action="Index" asp-controller="Login" method="post">
                                             <div asp-validation-summary="All" class="text-danger"></div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputEmail" asp-for="UserName" type="text" placeholder="Nhập tài khoản" />
                                                 <label for="inputEmail">Tài khoản</label>
+                                                <input class="form-control" id="inputEmail" asp-for="UserName" type="text" placeholder="Nhập tài khoản" />
+                                                
                                                 <span asp-validation-for="UserName" class="text-danger"></span>
                                             </div>
                                             <div class="form-floating mb-3">
-                                                <input class="form-control" id="inputPassword" asp-for="Password" type="password" placeholder="Nhập mật khẩu" />
                                                 <label for="inputPassword">Mật khẩu</label>
+                                                <input class="form-control" id="inputPassword" asp-for="Password" type="password" placeholder="Nhập mật khẩu" />
+                                                
                                                 <span asp-validation-for="Password" class="text-danger"></span>
                                             </div>
                                             <div class="form-check mb-3">
