@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using eShopSolution.AdminApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eShopSolution.AdminApp.Controllers
 {
@@ -17,7 +18,7 @@ namespace eShopSolution.AdminApp.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize(Roles = "admin,lecturer")]
         public IActionResult Index()
         {
             var user = User.Identity.Name;
