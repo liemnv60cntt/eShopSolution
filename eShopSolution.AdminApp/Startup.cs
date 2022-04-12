@@ -36,7 +36,6 @@ namespace eShopSolution.AdminApp
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
             })
             .AddCookie(options =>
             {
@@ -53,8 +52,8 @@ namespace eShopSolution.AdminApp
                     var userId = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
                     //Check the user exists in database and if not create.
                     return Task.CompletedTask;
-                };
-                options.SaveTokens = true;*/
+                };*/
+                options.SaveTokens = false;
             });
             services.AddRazorPages();
             services.AddControllersWithViews()
@@ -97,10 +96,10 @@ namespace eShopSolution.AdminApp
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            
             app.UseRouting();
-
             app.UseAuthorization();
+
             app.UseSession();
             app.UseEndpoints(endpoints =>
             {
