@@ -68,7 +68,7 @@ namespace eShopSolution.AdminApp.Services
             requestContent.Add(new StringContent(request.SeoAlias.ToString()), "seoAlias");
             requestContent.Add(new StringContent(languageId), "languageId");
 
-            var response = await client.PostAsync($"/api/products/", requestContent);
+            var response = await client.PostAsync($"/api/products", requestContent);
             return response.IsSuccessStatusCode;
 
         }
