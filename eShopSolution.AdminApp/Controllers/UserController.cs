@@ -33,7 +33,7 @@ namespace eShopSolution.AdminApp.Controllers
             _roleApiClient = roleApiClient;
         }
         [Authorize(Roles = "admin,lecturer")]
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
         {
             var request = new GetUserPagingRequest()
             {

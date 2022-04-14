@@ -10,7 +10,7 @@ namespace eShopSolution.BackendApi.Controllers
     //api/products
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -40,6 +40,7 @@ namespace eShopSolution.BackendApi.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm]ProductCreateRequest request)
         {
             if (!ModelState.IsValid)
