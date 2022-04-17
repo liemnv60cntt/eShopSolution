@@ -1,6 +1,8 @@
 ﻿using eShopSolution.AdminApp.Services;
 using eShopSolution.Utilities.Constants;
 using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -74,6 +76,49 @@ namespace eShopSolution.AdminApp.Controllers
             ModelState.AddModelError("", "Thêm sản phẩm thất bại!");
             return View(request);
         }
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CategoryAssign(int id)
+        {
+            var cateAssignRequest = await GetCategoryAssignRequest(id);
+            return View(cateAssignRequest);
+        }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> CategoryAssign(CategoryAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var result = await _productApiClient.CategoryAssign(request.Id, request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Gán danh mục cho sản phẩm thành công!";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            var roleAssignRequest = await GetCategoryAssignRequest(request.Id);
+            return View(roleAssignRequest);
+        }
+        private async Task<CategoryAssignRequest> GetCategoryAssignRequest(int id)
+        {
+            var languageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
+
+            var products = await _productApiClient.GetById(id,languageId);
+            var categories = await _categoryApiClient.GetAll(languageId);
+            var categoryAssignRequest = new CategoryAssignRequest();
+            foreach (var cate in categories)
+            {
+                categoryAssignRequest.Categories.Add(new SelectItem()
+                {
+                    Id = cate.Id.ToString(),
+                    Name = cate.Name,
+                    Selected = products.Categories.Contains(cate.Name)
+                });
+            }
+            return categoryAssignRequest;
+        }
     }
 }
