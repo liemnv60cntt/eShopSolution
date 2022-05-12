@@ -9,6 +9,7 @@ namespace eShopSolution.AdminApp.Services
 {
     public interface IUserApiClient
     {
+        Task<ApiResult<string>> AuthenticateGoogle(LoginGoogleRequest request);
         Task<ApiResult<string>> Authenticate(LoginRequest request);
 
         Task<ApiResult<PagedResult<UserVm>>> GetUsersPagings(GetUserPagingRequest request);

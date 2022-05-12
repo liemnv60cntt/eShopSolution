@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using eShopSolution.Application.System.Users;
 using eShopSolution.ViewModels.System.Users;
@@ -37,7 +38,27 @@ namespace eShopSolution.BackendApi.Controllers
             }
             return Ok(result);
         }
+        [HttpPost("auth")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AuthenticateGoogle([FromBody] LoginGoogleRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var result = await _userService.AuthenticateGoogle(request);
+
+            if (string.IsNullOrEmpty(result.ResultObj))
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("fullname")]
+        public IActionResult GetUserName()
+        {
+            var name = User.FindFirstValue(ClaimTypes.GivenName);
+            return Ok(name);
+        }
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody]RegisterRequest request)

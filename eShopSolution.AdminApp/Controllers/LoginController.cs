@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using eShopSolution.AdminApp.Services;
 using eShopSolution.Utilities.Constants;
@@ -20,6 +22,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace eShopSolution.AdminApp.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private readonly IUserApiClient _userApiClient;
@@ -67,34 +70,63 @@ namespace eShopSolution.AdminApp.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-       
+        
         public async Task Login()
         {
+
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
                 new AuthenticationProperties()
                 {
                     RedirectUri = Url.Action("GoogleResponse")
                 });
         }
+        
         public async Task<IActionResult> GoogleResponse()
         {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
-            {
-                claim.Issuer,
-                claim.OriginalIssuer,
-                claim.Type,
-                claim.Value
-            });
-            return Json(claims);
-        }
-        /*public async Task OnGetAsync()
-        {
-            var accessToken = await HttpContext.GetTokenAsync(
-                GoogleDefaults.AuthenticationScheme, "access_token");
+            //var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            //{
+            //    claim.Issuer,
+            //    claim.OriginalIssuer,
+            //    claim.Type,
+            //    claim.Value,
+            //});
+            //var cl = User.FindFirst(ClaimTypes.Name)?.Value;
+            //var r = Regex.Unescape(cl);
+            //return Json(r);
 
-            // ...
-        }*/
+            var properites = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                IsPersistent = false
+            };
+  
+            await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var request = new LoginGoogleRequest()
+            {
+                UserName = User.FindFirst(ClaimTypes.Email).Value,
+                Email = User.FindFirst(ClaimTypes.Email).Value,
+                FirstName = User.FindFirst(ClaimTypes.GivenName).Value,
+                LastName = User.FindFirst(ClaimTypes.Surname).Value
+            };
+            var result2 = await _userApiClient.AuthenticateGoogle(request);
+            var userPrincipal = this.ValidateToken(result2.ResultObj);
+            HttpContext.Session.SetString(SystemConstants.AppSettings.DefaultLanguageId, _configuration[SystemConstants.AppSettings.DefaultLanguageId]);
+            HttpContext.Session.SetString(SystemConstants.AppSettings.Token, result2.ResultObj);
+            await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        userPrincipal,
+                        properites);
+            return RedirectToAction("Index", "Home");
+        }
+        
+        //public async Task<IActionResult> OnGetAsync()
+        //{
+        //    var accessToken = await HttpContext.GetTokenAsync(
+        //        GoogleDefaults.AuthenticationScheme, "access_token");
+
+        //    return Json(accessToken);
+        //}
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();

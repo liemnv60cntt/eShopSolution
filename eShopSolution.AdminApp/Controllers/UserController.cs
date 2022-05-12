@@ -32,7 +32,7 @@ namespace eShopSolution.AdminApp.Controllers
             _configuration = configuration;
             _roleApiClient = roleApiClient;
         }
-        [Authorize(Roles = "admin,lecturer")]
+        //[Authorize(Roles = "admin,lecturer")]
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 2)
         {
             var request = new GetUserPagingRequest()
@@ -50,7 +50,7 @@ namespace eShopSolution.AdminApp.Controllers
             return View(data.ResultObj);
         }
         [HttpGet]
-        [Authorize(Roles = "admin,lecturer")]
+        //[Authorize(Roles = "admin,lecturer")]
         public async Task<IActionResult> Details(Guid id)
         {
             var result = await _userApiClient.GetById(id);
@@ -64,7 +64,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(RegisterRequest request)
         {
             if (!ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(Guid id)
         {
             var result = await _userApiClient.GetById(id);
@@ -103,7 +103,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
@@ -129,7 +129,7 @@ namespace eShopSolution.AdminApp.Controllers
             return RedirectToAction("Index", "Login");
         }
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public IActionResult Delete(Guid id)
         {
             return View(new UserDeleteRequest()
@@ -139,7 +139,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(UserDeleteRequest request)
         {
             if (!ModelState.IsValid)
@@ -157,7 +157,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> RoleAssign(Guid id)
         {
             var roleAssignRequest = await GetRoleAssignRequest(id);
@@ -165,7 +165,7 @@ namespace eShopSolution.AdminApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
         {
             if (!ModelState.IsValid)
